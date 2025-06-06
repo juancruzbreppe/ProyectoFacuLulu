@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Clínica Médica - App</title>
+<style>
+  :root {
+    --color-primary: #2c7a7b; /* teal blue */
+    --color-primary-light: #38a89d;
+    --color-success: #48bb78; /* green */
+    --color-error: #e53e3e;   /* red */
+    --color-text: #2d3748;    /* dark slate */
+    --color-text-muted: #4a5568; /* gray */
+    --color-bg: #f9fafb;      /* very light gray */
+    --font-sans: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--color-bg);
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a {
+    color: var(--color-primary);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  button {
+    cursor: pointer;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  button:focus {
+    outline: 2px solid var(--color-primary-light);
+    outline-offset: 2px;
+  }
+  button.primary {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.8rem 1.5rem;
+  }
+  button.primary:hover {
+    background-color: var(--color-primary-light);
+    transform: scale(1.03);
+  }
+  button.success {
+    background-color: var(--color-success);
+    color: white;
+    padding: 0.8rem 1.5rem;
+  }
+  button.success:hover {
+    background-color: #38a169;
+    transform: scale(1.03);
+  }
+  button.ghost {
+    background: transparent;
+    color: var(--color-primary);
+    padding: 0.6rem 1rem;
+    font-weight: 500;
+  }
+  button.ghost:hover {
+    background-color: rgba(56,168,157,0.15);
+  }
+
+  input, select, textarea {
+    font-size: 1rem;
+    font-family: var(--font-sans);
+    border-radius: 6px;
+    border: 1.5px solid #cbd5e0;
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+  input[readonly], textarea[readonly] {
+    background: #e2e8f0;
+    color: #718096;
+  }
+  label {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    display: block;
+    color: var(--color-text);
+  }
+
+  /* Layout containers */
+  .container {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem 1rem;
+  }
+  @media (min-width: 768px) {
+    .container {
+      max-width: 700px;
+      padding: 3rem 2rem;
+    }
+  }
+
+  h1, h2, h3 {
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: var(--color-primary);
+  }
+  h1 {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+  h2 {
+    font-size: 1.75rem;
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  .logo {
+    display: block;
+    margin: 0 auto 2rem auto;
+    max-width: 180px;
+  }
+
+  /* Error message style */
+  .error-msg {
+    color: var(--color-error);
+    font-weight: 600;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+
+  /* Link below form */
+  .form-footer {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  /* Form layout */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Checkbox with text inline */
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Medical record header */
+  .med-header {
+    background: var(--color-primary);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .med-header img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: white;
+  }
+  .med-header .patient-info {
+    font-weight: 600;
+  }
+  
+  /* Navbar in medical record */
+  nav.navbar {
+    background: #225e60;
+    color: white;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0 0 10px 10px;
+  }
+  nav.navbar a {
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+  }
+  nav.navbar a:hover,
+  nav.navbar a.active {
+    color: var(--color-success);
+  }
+  nav.navbar a:focus-visible {
+    outline: 2px solid var(--color-success);
+    outline-offset: 2px;
+  }
+
+  /* Medical record content */
+  .med-content {
+    background: white;
+    padding: 1.5rem 1.5rem 2rem 1.5rem;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 8px rgb(44 122 123 / 0.15);
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.9rem;
+  }
+  th {
+    font-weight: 600;
+    background: #f0fdfa;
+    color: var(--color-primary);
+  }
+  tbody tr:hover {
+    background: #f0f9f9;
+  }
+
+  /* Lists */
+  ul.consults {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  ul.consults li {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    display: grid;
+    grid-template-columns: 100px 1fr 120px;
+    gap: 0.5rem;
+  }
+  ul.consults li:last-child {
+    border-bottom: none;
+  }
+
+  /* Edit mode styles */
+  .editable input:not([readonly]),
+  .editable textarea:not([readonly]),
+  .editable select:not([readonly]) {
+    background: white;
+    border-color: var(--color-primary-light);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .med-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    ul.consults li {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+    nav.navbar {
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Login view -->
+  <section id="view-login" aria-label="Inicio de sesión" >
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Blue_cross_logo.svg/320px-Blue_cross_logo.svg.png" alt="Logo Clínica" class="logo" />
+    <h1>Inicio de sesión</h1>
+    <form id="form-login" novalidate>
+      <label for="dni-login">Ingrese su DNI</label>
+      <input 
+        id="dni-login" 
+        name="dni-login" 
+        type="text" 
+        inputmode="numeric" 
+        pattern="[0-9]*" 
+        maxlength="8" 
+        placeholder="12345678" 
+        autocomplete="off" 
+        required 
+        aria-describedby="dni-error" />
+      <div id="dni-error" class="error-msg" role="alert" aria-live="assertive" style="display:none;">DNI no registrado. Complete el formulario de primer ingreso.</div>
+      <button type="submit" class="primary" aria-label="Ingresar con DNI">Ingresar</button>
+    </form>
+    <div class="form-footer">
+      ¿Primera vez? <a href="#" id="link-register">Regístrese aquí</a>
+    </div>
+  </section>
+
+  <!-- Registration form view -->
+  <section id="view-register" aria-label="Formulario de registro" style="display:none;">
+    <h1>Registro de paciente</h1>
+    <form id="form-register" novalidate>
+      <label for="nombre">Nombre y Apellido</label>
+      <input id="nombre" name="nombre" type="text" placeholder="Juan Pérez" autocomplete="name" required />
+      
+      <label for="dni-register">DNI</label>
+      <input id="dni-register" name="dni-register" type="text" readonly />
+
+      <label for="fecha-nac">Fecha de Nacimiento</label>
+      <input id="fecha-nac" name="fecha-nac" type="date" required max="" />
+
+      <label for="genero">Género</label>
+      <select id="genero" name="genero" required>
+        <option value="" disabled selected>Seleccione...</option>
+        <option value="masculino">Masculino</option>
+        <option value="femenino">Femenino</option>
+        <option value="otro">Otro</option>
+      </select>
+
+      <label for="contacto">Contacto (Teléfono o Email)</label>
+      <input id="contacto" name="contacto" type="text" placeholder="ejemplo@correo.com o +54 11 1234-5678" required autocomplete="tel email"/>
+
+      <label for="antecedentes">Antecedentes Médicos</label>
+      <textarea id="antecedentes" name="antecedentes" rows="3" placeholder="Describa sus antecedentes" ></textarea>
+
+      <div class="checkbox-group">
+        <input id="check-alergias" name="check-alergias" type="checkbox" />
+        <label for="check-alergias">¿Tiene alergias?</label>
+      </div>
+      <textarea id="alergias-text" name="alergias-text" rows="2" placeholder="Especifique sus alergias" style="display:none; resize:none;"></textarea>
+
+      <button type="submit" class="success" aria-label="Guardar datos de registro">Guardar datos</button>
+    </form>
+    <div class="form-footer">
+      ¿Ya tiene cuenta? <a href="#" id="link-login">Volver al inicio de sesión</a>
+    </div>
+  </section>
+
+  <!-- Medical record view -->
+  <section id="view-record" aria-label="Ficha médica" style="display:none; max-width: 850px; margin: auto;">
+    <header class="med-header">
+      <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Foto genérica paciente" />
+      <div class="patient-info" id="patient-info-header" aria-live="polite" aria-atomic="true" style="min-width:150px;">
+        <div id="patient-name" style="font-size:1.3rem;"></div>
+        <div id="patient-dni" style="font-size: 0.9rem; opacity: 0.8;"></div>
+      </div>
+    </header>
+    <nav class="navbar" role="navigation" aria-label="Navegación principal">
+      <a href="#" id="nav-inicio" class="active" tabindex="0">Inicio</a>
+      <a href="#" id="nav-mi-perfil" tabindex="0">Mi perfil</a>
+      <a href="#" id="nav-cerrar-sesion" tabindex="0">Cerrar sesión</a>
+    </nav>
+    <div class="med-content">
+      <section id="data-personal-section">
+        <h2>Datos Personales</h2>
+        <table aria-label="Datos personales del paciente">
+          <tbody>
+            <tr><th>Nombre y Apellido</th><td id="dp-nombre"></td></tr>
+            <tr><th>DNI</th><td id="dp-dni"></td></tr>
+            <tr><th>Fecha de Nacimiento</th><td id="dp-fecha"></td></tr>
+            <tr><th>Género</th><td id="dp-genero"></td></tr>
+            <tr><th>Contacto</th><td id="dp-contacto"></td></tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="historial-medico-section">
+        <h2>Historial Médico</h2>
+        <p><strong>Antecedentes Médicos:</strong></p>
+        <p id="hm-antecedentes" style="white-space: pre-wrap;"></p>
+        <p><strong>Alergias:</strong></p>
+        <p id="hm-alergias"></p>
+      </section>
+      <section id="ultimas-consultas-section">
+        <h2>Últimas Consultas</h2>
+        <ul class="consults" aria-label="Listado de últimas consultas">
+          <!-- list filled dynamically -->
+        </ul>
+      </section>
+      <div style="margin-top: 1.5rem; display: flex; gap:1rem; flex-wrap: wrap;">
+        <button id="btn-editar" class="primary" aria-pressed="false" aria-label="Editar datos personales">Editar datos</button>
+        <button id="btn-guardar" class="success" style="display:none;" aria-label="Guardar datos editados">Guardar</button>
+        <button id="btn-cancelar" class="ghost" style="display:none;" aria-label="Cancelar edición">Cancelar</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  // Mock database of DNIs known for demo
+  const mockUsers = {
+    "12345678": {
+      nombre: "Juan Pérez",
+      dni: "12345678",
+      fechaNac: "1985-04-12",
+      genero: "masculino",
+      contacto: "juan.perez@email.com",
+      antecedentes: "Hipertensión arterial controlada.\nOperación de apendicitis en 2005.",
+      alergias: "Penicilina",
+      consultas: [
+        { fecha: "2023-05-10", motivo: "Chequeo general", medico: "Dra. Gómez" },
+        { fecha: "2023-03-18", motivo: "Dolor de garganta", medico: "Dr. Martínez" }
+      ]
+    },
+    "87654321": {
+      nombre: "María López",
+      dni: "87654321",
+      fechaNac: "1990-07-22",
+      genero: "femenino",
+      contacto: "+54 9 11 2345-6789",
+      antecedentes: "Asma leve.",
+      alergias: "Ninguna",
+      consultas: [
+        { fecha: "2023-04-01", motivo: "Consulta respiratoria", medico: "Dra. Ruiz" }
+      ]
+    }
+  };
+
+  // Elements
+  const viewLogin = document.getElementById('view-login');
+  const viewRegister = document.getElementById('view-register');
+  const viewRecord = document.getElementById('view-record');
+  const dniLoginInput = document.getElementById('dni-login');
+  const formLogin = document.getElementById('form-login');
+  const errorLogin = document.getElementById('dni-error');
+
+  const linkRegister = document.getElementById('link-register');
+  const linkLogin = document.getElementById('link-login');
+
+  const formRegister = document.getElementById('form-register');
+  const dniRegisterInput = document.getElementById('dni-register');
+  const alergiasCheckbox = document.getElementById('check-alergias');
+  const alergiasText = document.getElementById('alergias-text');
+
+  const viewPatientName = document.getElementById('patient-name');
+  const viewPatientDni = document.getElementById('patient-dni');
+
+  const dpNombre = document.getElementById('dp-nombre');
+  const dpDni = document.getElementById('dp-dni');
+  const dpFecha = document.getElementById('dp-fecha');
+  const dpGenero = document.getElementById('dp-genero');
+  const dpContacto = document.getElementById('dp-contacto');
+
+  const hmAntecedentes = document.getElementById('hm-antecedentes');
+  const hmAlergias = document.getElementById('hm-alergias');
+  const ultimasConsultasList = document.querySelector('ul.consults');
+
+  const btnEditar = document.getElementById('btn-editar');
+  const btnGuardar = document.getElementById('btn-guardar');
+  const btnCancelar = document.getElementById('btn-cancelar');
+
+  const navInicio = document.getElementById('nav-inicio');
+  const navMiPerfil = document.getElementById('nav-mi-perfil');
+  const navCerrarSesion = document.getElementById('nav-cerrar-sesion');
+
+  let currentUser = null;
+  let inEditMode = false;
+
+  // Validate DNI input to only accept numbers and max length
+  dniLoginInput.addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '').slice(0,8);
+    errorLogin.style.display = 'none';
+  });
+
+  // DNI input maxlength enforcement for register form enforced by readonly set
+
+  // Show/hide allergies text area on checkbox
+  alergiasCheckbox.addEventListener('change', () => {
+    if (alergiasCheckbox.checked) {
+      alergiasText.style.display = 'block';
+      alergiasText.required = true;
+    } else {
+      alergiasText.style.display = 'none';
+      alergiasText.required = false;
+      alergiasText.value = '';
+    }
+  });
+
+  // Set max date for birth date (today)
+  const fechaNacInput = document.getElementById('fecha-nac');
+  const todayISO = new Date().toISOString().split('T')[0];
+  fechaNacInput.setAttribute('max', todayISO);
+
+  // Switch visible view helper
+  function showView(view) {
+    viewLogin.style.display = 'none';
+    viewRegister.style.display = 'none';
+    viewRecord.style.display = 'none';
+
+    view.style.display = 'block';
+  }
+
+  // Fill medical record with user data
+  function fillMedicalRecord(user) {
+    dpNombre.textContent = user.nombre;
+    dpDni.textContent = user.dni;
+    dpFecha.textContent = user.fechaNac.split('-').reverse().join('/');
+    dpGenero.textContent = user.genero.charAt(0).toUpperCase() + user.genero.slice(1);
+    dpContacto.textContent = user.contacto;
+
+    hmAntecedentes.textContent = user.antecedentes || "No registra antecedentes.";
+    hmAlergias.textContent = user.alergias || "No registra alergias.";
+
+    viewPatientName.textContent = user.nombre;
+    viewPatientDni.textContent = "DNI: " + user.dni;
+
+    // fill latest consultations list
+    ultimasConsultasList.innerHTML = '';
+    if (user.consultas && user.consultas.length) {
+      user.consultas.forEach(c => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${c.fecha.split('-').reverse().join('/')}</span><span>${c.motivo}</span><span>${c.medico}</span>`;
+        ultimasConsultasList.appendChild(li);
+      });
+    } else {
+      const li = document.createElement('li');
+      li.textContent = "Sin consultas recientes.";
+      ultimasConsultasList.appendChild(li);
+    }
+  }
+
+  // Handle login form submit
+  formLogin.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const dni = dniLoginInput.value.trim();
+    if (!dni) return;
+    if (mockUsers[dni]) {
+      errorLogin.style.display = 'none';
+      currentUser = JSON.parse(JSON.stringify(mockUsers[dni]));
+      fillMedicalRecord(currentUser);
+      showView(viewRecord);
+      inEditMode = false;
+      updateEditUI();
+    } else {
+      // DNI no registrado
+      errorLogin.style.display = 'block';
+      // prefill dni in register form
+      dniRegisterInput.value = dni;
+      // Scroll to error message
+      errorLogin.focus();
+    }
+  });
+
+  // Link to Register Form
+  linkRegister.addEventListener('click', e => {
+    e.preventDefault();
+    const dni = dniLoginInput.value.trim();
+    if (dni && /^\d{1,8}$/.test(dni)) {
+      dniRegisterInput.value = dni;
+    } else {
+      dniRegisterInput.value = '';
+    }
+    formRegister.reset();
+    alergiasText.style.display = 'none';
+    showView(viewRegister);
+  });
+
+  // Link to Login
+  linkLogin.addEventListener('click', e => {
+    e.preventDefault();
+    formLogin.reset();
+    errorLogin.style.display = 'none';
+    showView(viewLogin);
+  });
+
+  // Handle register form submit
+  formRegister.addEventListener('submit', e => {
+    e.preventDefault();
+    const formData = new FormData(formRegister);
+    if (!formRegister.checkValidity()) {
+      formRegister.reportValidity();
+      return;
+    }
+    // Build new user from form
+    const newUser = {
+      nombre: formData.get('nombre').trim(),
+      dni: dniRegisterInput.value,
+      fechaNac: formData.get('fecha-nac'),
+      genero: formData.get('genero'),
+      contacto: formData.get('contacto').trim(),
+      antecedentes: formData.get('antecedentes').trim(),
+      alergias: alergiasCheckbox.checked ? formData.get('alergias-text').trim() || "No especifica" : "No",
+      consultas: []
+    };
+    currentUser = newUser;
+    fillMedicalRecord(currentUser);
+    showView(viewRecord);
+    inEditMode = false;
+    updateEditUI();
+  });
+
+  // Button Edit toggle
+  btnEditar.addEventListener('click', () => {
+    inEditMode = true;
+    updateEditUI();
+  });
+  // Button Cancel
+  btnCancelar.addEventListener('click', () => {
+    inEditMode = false;
+    fillMedicalRecord(currentUser);
+    updateEditUI();
+  });
+  // Button Save (mock save)
+  btnGuardar.addEventListener('click', () => {
+    // gather edited data from visible table - only non-critical fields editable
+    const nombreNuevo = prompt("Editar Nombre y Apellido:", currentUser.nombre);
+    if (nombreNuevo && nombreNuevo.trim() !== '') {
+      currentUser.nombre = nombreNuevo.trim();
+    }
+    const contactoNuevo = prompt("Editar Contacto:", currentUser.contacto);
+    if (contactoNuevo && contactoNuevo.trim() !== '') {
+      currentUser.contacto = contactoNuevo.trim();
+    }
+    fillMedicalRecord(currentUser);
+    inEditMode = false;
+    updateEditUI();
+  });
+
+  function updateEditUI() {
+    if (inEditMode) {
+      btnEditar.style.display = 'none';
+      btnGuardar.style.display = 'inline-block';
+      btnCancelar.style.display = 'inline-block';
+      // Make certain fields editable - here we simulate with prompts instead to keep UI simple and clean
+      // In a real app, you would have input fields inline editable, but for this wireframe we keep clarity
+    } else {
+      btnEditar.style.display = 'inline-block';
+      btnGuardar.style.display = 'none';
+      btnCancelar.style.display = 'none';
+    }
+  }
+
+  // Nav links in medical record
+  navInicio.addEventListener('click', e => {
+    e.preventDefault();
+    navInicio.classList.add('active');
+    navMiPerfil.classList.remove('active');
+    // In this demo, 'Inicio' is main record view, no extra change needed
+  });
+  navMiPerfil.addEventListener('click', e => {
+    e.preventDefault();
+    navInicio.classList.remove('active');
+    navMiPerfil.classList.add('active');
+    alert("Mi perfil - funcionalidad futura.");
+  });
+  navCerrarSesion.addEventListener('click', e => {
+    e.preventDefault();
+    currentUser = null;
+    inEditMode = false;
+    formLogin.reset();
+    formRegister.reset();
+    errorLogin.style.display = 'none';
+    alergiasText.style.display = 'none';
+    showView(viewLogin);
+  });
+
+  // Initialise showing login
+  showView(viewLogin);
+})();
+</script>
+
+</body>
+</html>
+
