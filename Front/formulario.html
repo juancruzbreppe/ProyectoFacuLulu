@@ -1,0 +1,107 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registro de paciente</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Registro de paciente</h1>
+      <form id="form-register" novalidate>
+        <!-- DNI (readonly, precargado desde ?dni=) -->
+        <label for="dni-register">DNI</label>
+        <input id="dni-register" name="Dni" type="text" required />
+
+        <!-- Nombre y Apellido -->
+        <label for="nombre">Nombre</label>
+        <input id="nombre" name="Nombre" type="text" required />
+
+        <label for="apellido">Apellido</label>
+        <input id="apellido" name="Apellido" type="text" required />
+
+        <!-- Fecha de nacimiento -->
+        <label for="fecha-nac">Fecha de Nacimiento</label>
+        <input id="fecha-nac" name="FechaNacimiento" type="date" required />
+
+        <!-- Sexo -->
+        <label for="genero">Sexo</label>
+        <select id="genero" name="Sexo" required>
+          <option value="" disabled selected>Seleccione...</option>
+          <option value="M">Masculino</option>
+          <option value="F">Femenino</option>
+        </select>
+
+        <!-- Grupo sanguíneo -->
+        <label for="grupo-sang">Grupo Sanguíneo</label>
+        <input
+          id="grupo-sang"
+          name="GrupoSanguineo"
+          type="text"
+          placeholder="e.g. A+, O–"
+        />
+
+        <!-- Diabético -->
+        <div class="checkbox-group">
+          <input id="check-diabetico" name="EsDiabetico" type="checkbox" />
+          <label for="check-diabetico">¿Es diabético?</label>
+        </div>
+
+        <!-- Alergias -->
+        <div class="checkbox-group">
+          <input id="check-alergias" name="EsAlergico" type="checkbox" />
+          <label for="check-alergias">¿Tiene alergias?</label>
+        </div>
+        <textarea
+          id="alergias-text"
+          name="Alergias"
+          rows="2"
+          placeholder="Especifique sus alergias"
+          style="display: none; resize: none"
+        ></textarea>
+
+        <!-- Enfermedades -->
+        <label for="enfermedades">Enfermedades</label>
+        <textarea
+          id="enfermedades"
+          name="Enfermedades"
+          rows="2"
+          placeholder="Describa enfermedades pasadas o crónicas"
+        ></textarea>
+
+        <!-- Medicación actual -->
+        <label for="medicacion">Medicación Actual</label>
+        <textarea
+          id="medicacion"
+          name="MedicacionActual"
+          rows="2"
+          placeholder="Medicamentos que toma actualmente"
+        ></textarea>
+
+        <!-- Contacto de emergencia -->
+        <label for="contacto-nombre">Contacto Emergencia (Nombre)</label>
+        <input
+          id="contacto-nombre"
+          name="NombreContactoEmergencia"
+          type="text"
+          required
+        />
+
+        <label for="contacto-telf">Teléfono de Contacto</label>
+        <input
+          id="contacto-telf"
+          name="TelefonoContactoEmergencia"
+          type="tel"
+          required
+        />
+
+        <button type="submit" class="success">Guardar datos</button>
+      </form>
+    </div>
+    <div id="loader" class="loader-overlay" style="display: none">
+      <div class="loader-spinner"></div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

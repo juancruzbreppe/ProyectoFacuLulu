@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ficha Médica</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container" style="max-width: 850px; margin: auto">
+      <header class="med-header">
+        <img id="patient-photo" src="..." alt="Foto paciente" />
+        <div
+          class="patient-info"
+          aria-live="polite"
+          aria-atomic="true"
+          style="min-width: 150px"
+        >
+          <div id="patient-name" style="font-size: 1.3rem"></div>
+          <div id="patient-dni" style="font-size: 0.9rem; opacity: 0.8"></div>
+        </div>
+      </header>
+
+      <div class="med-content">
+        <!-- Datos Personales -->
+        <section>
+          <h2>Datos Personales</h2>
+          <table aria-label="Datos personales del paciente">
+            <tbody>
+              <tr>
+                <th>DNI</th>
+                <td id="dp-dni"></td>
+              </tr>
+              <tr>
+                <th>Nombre</th>
+                <td id="dp-nombre"></td>
+              </tr>
+              <tr>
+                <th>Apellido</th>
+                <td id="dp-apellido"></td>
+              </tr>
+              <tr>
+                <th>Fecha de Nacimiento</th>
+                <td id="dp-fecha"></td>
+              </tr>
+              <tr>
+                <th>Sexo</th>
+                <td id="dp-genero"></td>
+              </tr>
+              <tr>
+                <th>Grupo Sanguíneo</th>
+                <td id="dp-grupo"></td>
+              </tr>
+              <tr>
+                <th>Diabético</th>
+                <td id="dp-diabetico"></td>
+              </tr>
+              <tr>
+                <th>Alergias</th>
+                <td id="dp-alergico"></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Historial Médico -->
+        <section>
+          <h2>Historial Médico</h2>
+          <p><strong>Antecedentes Médicos:</strong></p>
+          <p id="hm-enfermedades" style="white-space: pre-wrap"></p>
+          <p><strong>Medicación Actual:</strong></p>
+          <p id="hm-medicacion" style="white-space: pre-wrap"></p>
+        </section>
+
+        <!-- Contacto de Emergencia -->
+        <section>
+          <h2>Contacto de Emergencia</h2>
+          <table aria-label="Contacto emergencia">
+            <tbody>
+              <tr>
+                <th>Nombre</th>
+                <td id="ce-nombre"></td>
+              </tr>
+              <tr>
+                <th>Teléfono</th>
+                <td id="ce-telefono"></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Botón para volver -->
+        <div style="text-align: center; margin-top: 2rem">
+          <button
+            onclick="window.location.href='busqueda.html'"
+            class="primary"
+          >
+            ← Volver a Búsqueda
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Loader global -->
+    <div id="loader" class="loader-overlay" style="display: none">
+      <div class="loader-spinner"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

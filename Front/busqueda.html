@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Búsqueda de Ficha</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <section aria-label="Búsqueda de paciente">
+        <img src="logoFacuLulu.jpg" alt="Logo Clínica" class="logo" />
+        <h1>Buscar Ficha Médica</h1>
+        <form id="form-login" novalidate>
+          <label for="dni-login">Ingrese DNI del paciente</label>
+          <input
+            id="dni-login"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="10"
+            placeholder="12345678"
+            autocomplete="off"
+            required
+            aria-describedby="dni-error"
+          />
+          <div
+            id="dni-error"
+            class="error-msg"
+            role="alert"
+            aria-live="assertive"
+            style="display: none"
+          >
+            DNI no encontrado. Verifique el número e intente de nuevo.
+          </div>
+          <button type="submit" class="primary" aria-label="Buscar ficha">
+            Buscar
+          </button>
+        </form>
+      </section>
+    </div>
+    <!-- Loader global -->
+    <div id="loader" class="loader-overlay" style="display: none">
+      <div class="loader-spinner"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
