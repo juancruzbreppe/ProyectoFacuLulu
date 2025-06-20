@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/",          "destination": "/busqueda.html" },
+    { "source": "/ficha/:dni", "destination": "/ficha.html?dni=:dni" }
+  ]
+}
