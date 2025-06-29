@@ -33,7 +33,7 @@
           window.location.href = `ficha.html?dni=${dni}`;
         } else if (res.status === 404) {
           // Si no existe, redirigimos al formulario de registro, pasando el DNI
-          window.location.href = `formulario.html?dni=${dni}`;
+          window.location.href = `formulario.html?documento=${dni}`;
         } else {
           console.error("Error inesperado:", res.status);
         }
@@ -51,7 +51,7 @@
   if (registerForm) {
     // Si venimos de login con DNI en query string, lo precargamos
     const params = new URLSearchParams(window.location.search);
-    const dni = params.get("dni");
+    const dni = params.get("documento");
     if (dni) document.getElementById("dni-register").value = dni;
 
     // Función genérica para toggle de textareas
@@ -184,7 +184,7 @@
 
   // justo después de detectar registerForm
   const params = new URLSearchParams(window.location.search);
-  const dni = params.get("dni");
+  const dni = params.get("documento");
   if (dni) {
     const dniInput = document.getElementById("dni-register");
     dniInput.value = dni;
