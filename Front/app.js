@@ -29,11 +29,11 @@
       try {
         const res = await fetch(`${apiBase}/${dni}`);
         if (res.ok) {
+          // Si existe, vamos a la ficha
           window.location.href = `ficha.html?dni=${dni}`;
         } else if (res.status === 404) {
-          errorDiv.textContent =
-            "DNI no encontrado. Verifique e intente de nuevo.";
-          errorDiv.style.display = "block";
+          // Si no existe, redirigimos al formulario de registro, pasando el DNI
+          window.location.href = `formulario.html?dni=${dni}`;
         } else {
           console.error("Error inesperado:", res.status);
         }
@@ -180,6 +180,15 @@
     });
 
     return;
+  }
+
+  // justo después de detectar registerForm
+  const params = new URLSearchParams(window.location.search);
+  const dni = params.get("dni");
+  if (dni) {
+    const dniInput = document.getElementById("dni-register");
+    dniInput.value = dni;
+    dniInput.readOnly = true; // opcional: que no lo puedan editar
   }
 
   // --- Record view ---
