@@ -8,24 +8,37 @@ namespace FichaMedica.Modelos
 		[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 		public string Dni { get; set; }
-
-		// Datos personales
 		public string Nombre { get; set; }
 		public string Apellido { get; set; }
 		public DateTime? FechaNacimiento { get; set; }
 		public string Sexo { get; set; }
 
-		// Datos médicos
-		public string? GrupoSanguineo { get; set; }
-		public bool EsDiabetico { get; set; }
-		public bool EsAlergico { get; set; }
-		public string? Alergias { get; set; } // Puede ser un texto libre
-		public string? Enfermedades { get; set; }
-		public string? MedicacionActual { get; set; }
+		// Sección 1
+		public int? AlturaCm { get; set; }
+		public decimal? PesoKg { get; set; }
+		public string? Email { get; set; }
+		public string? Telefono { get; set; }
 
-		// Contacto en caso de emergencia
+		// Sección 2
+		public string? CondicionCronica { get; set; }
+		public string? CondicionesCronicasDetalle { get; set; }
+		public string? Alergia { get; set; }
+		public string? AlergiasDetalle { get; set; }
+		public string? MedicacionRegular { get; set; }
+		public string? MedicacionRegularDetalle { get; set; }
+		public string? CirugiaReciente { get; set; }
+		public string? CirugiaRecienteDetalle { get; set; }
+		public string? Fuma { get; set; }
+		public string? FumaDetalle { get; set; }
+		public string? Droga { get; set; }
+		public string? DrogaDetalle { get; set; }
+
+		// Sección 4
+		public string? GrupoSanguineo { get; set; }
+		public string? InformacionAdicional { get; set; }
 		public string? NombreContactoEmergencia { get; set; }
 		public string? TelefonoContactoEmergencia { get; set; }
+		public bool AceptaTerminos { get; set; }
 
 		public DateTime FechaCreacion { get; set; } = DateTime.UtcNow.AddHours(-3);
 	}

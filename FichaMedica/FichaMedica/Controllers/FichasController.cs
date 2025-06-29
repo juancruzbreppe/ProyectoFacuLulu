@@ -81,6 +81,27 @@ namespace FichaMedica.Controllers
 					_response.Resultado = corroborarFicha;
 				}
 
+				switch (modelo.Sexo)
+				{
+					case "M":
+						modelo.Sexo = "Masculino";
+						break;
+					case "F":
+						modelo.Sexo = "Femenino";
+						break;
+					case "NB":
+						modelo.Sexo = "No binario";
+						break;
+					case "NS":
+						modelo.Sexo = "Prefiero no decirlo";
+						break;
+					case "O":
+						modelo.Sexo = "Otro";
+						break;
+					default:
+						break;
+				}
+
 				if (modelo.Sexo == "M")
 				{
 					modelo.Sexo = "Masculino";

@@ -3,6 +3,7 @@ using System;
 using FichaMedica.Datos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FichaMedica.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250629145851_CambiosModelos")]
+    partial class CambiosModelos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,9 +97,6 @@ namespace FichaMedica.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("NombreContactoEmergencia")
-                        .HasColumnType("longtext");
-
                     b.Property<decimal?>("PesoKg")
                         .HasColumnType("decimal(65,30)");
 
@@ -105,9 +105,6 @@ namespace FichaMedica.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Telefono")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("TelefonoContactoEmergencia")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
